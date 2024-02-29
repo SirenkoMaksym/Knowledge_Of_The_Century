@@ -1,14 +1,19 @@
 package service;
 
 import model.Book;
+import model.User;
 import repository.BookRepository;
+import repository.UserRepository;
 import util.MyArrayList;
 
 public class BookService {
     private final BookRepository bookRepository;
 
-    public BookService(BookRepository bookRepository) {
+    private final UserRepository userRepository;
+
+    public BookService(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
     }
 
     public void addBook(String title, String author) {
@@ -40,5 +45,16 @@ public class BookService {
             return true;
         }
         return false;
+    }
+
+    //////////////////////////////////////////////////////
+
+
+    public void addUser(String name, String role) {
+        User newUser = new User(name, role.equals("admin") ? model.Role.ADMIN : model.Role.USER);
+        userRepository.addUser(newUser);
+    }
+    public User getUserByName(String name) {
+        return userRepository.findUserByName(name);
     }
 }
