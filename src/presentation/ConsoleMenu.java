@@ -8,12 +8,12 @@ import java.util.Scanner;
 
 public class ConsoleMenu {
     private final LibraryService libraryService;
-    private final UserService userService;
+
     private final Scanner scanner;
 
-    public ConsoleMenu(LibraryService libraryService, UserService userService) {
+    public ConsoleMenu(LibraryService libraryService) {
         this.libraryService = libraryService;
-        this.userService = userService;
+
         this.scanner = new Scanner(System.in);
     }
 
@@ -130,14 +130,14 @@ public class ConsoleMenu {
         String name = scanner.nextLine();
         System.out.print("Введите роль пользователя (admin/user): ");
         String role = scanner.nextLine();
-        userService.addUser(name, role);
+        libraryService.addUser(name, role);
         System.out.println("Пользователь добавлен.");
     }
 
     private void showUser() {
         System.out.print("Введите имя пользователя для поиска: ");
         String name = scanner.nextLine();
-        User user = userService.getUserByName(name);
+        User user = libraryService.getUserByName(name);
         if (user != null) {
             System.out.println("Информация о пользователе: " + user.toString());
         } else {
