@@ -6,12 +6,12 @@ import repository.BookRepository;
 import repository.UserRepository;
 import util.MyArrayList;
 
-public class BookService {
+public class LibraryService {
     private final BookRepository bookRepository;
 
     private final UserRepository userRepository;
 
-    public BookService(BookRepository bookRepository, UserRepository userRepository) {
+    public LibraryService(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
     }

@@ -2,19 +2,18 @@ package presentation;
 
 import model.Book;
 import model.User;
-import service.BookService;
-import service.UserService;
+import service.LibraryService;
 import util.MyArrayList;
 import java.util.Scanner;
 
 public class ConsoleMenu {
-    private final BookService bookService;
-    private final UserService userService;
+    private final LibraryService libraryService;
+
     private final Scanner scanner;
 
-    public ConsoleMenu(BookService bookService, UserService userService) {
-        this.bookService = bookService;
-        this.userService = userService;
+    public ConsoleMenu(LibraryService libraryService) {
+        this.libraryService = libraryService;
+
         this.scanner = new Scanner(System.in);
     }
 
@@ -70,12 +69,12 @@ public class ConsoleMenu {
         String title = scanner.nextLine();
         System.out.print("Введите автора книги: ");
         String author = scanner.nextLine();
-        bookService.addBook(title, author);
+        libraryService.addBook(title, author);
         System.out.println("Книга успешно добавлена.");
     }
 
     private void showAllBooks() {
-        MyArrayList<Book> books = bookService.getAllBooks();
+        MyArrayList<Book> books = libraryService.getAllBooks();
         if (books.size() == 0) {
             System.out.println("В библиотеке пока нет книг.");
         } else {
@@ -89,7 +88,7 @@ public class ConsoleMenu {
     private void searchBooks() {
         System.out.print("Введите название книги для поиска: ");
         String title = scanner.nextLine();
-        MyArrayList<Book> foundBooks = bookService.searchBooksByTitle(title);
+        MyArrayList<Book> foundBooks = libraryService.searchBooksByTitle(title);
         if (foundBooks.size() == 0) {
             System.out.println("Книги не найдены.");
         } else {
@@ -105,7 +104,7 @@ public class ConsoleMenu {
         String title = scanner.nextLine();
         System.out.print("Введите автора книги: ");
         String author = scanner.nextLine();
-        boolean success = bookService.borrowBook(title, author);
+        boolean success = libraryService.borrowBook(title, author);
         if (success) {
             System.out.println("Книга успешно взята.");
         } else {
@@ -118,7 +117,7 @@ public class ConsoleMenu {
         String title = scanner.nextLine();
         System.out.print("Введите автора книги: ");
         String author = scanner.nextLine();
-        boolean success = bookService.returnBook(title, author);
+        boolean success = libraryService.returnBook(title, author);
         if (success) {
             System.out.println("Книга успешно возвращена.");
         } else {
@@ -131,14 +130,14 @@ public class ConsoleMenu {
         String name = scanner.nextLine();
         System.out.print("Введите роль пользователя (admin/user): ");
         String role = scanner.nextLine();
-        userService.addUser(name, role);
+        libraryService.addUser(name, role);
         System.out.println("Пользователь добавлен.");
     }
 
     private void showUser() {
         System.out.print("Введите имя пользователя для поиска: ");
         String name = scanner.nextLine();
-        User user = userService.getUserByName(name);
+        User user = libraryService.getUserByName(name);
         if (user != null) {
             System.out.println("Информация о пользователе: " + user.toString());
         } else {
