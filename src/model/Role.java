@@ -5,5 +5,12 @@
 
 package model;
 
-public class Role {
+public enum Role {
+    ADMIN,
+    USER;
+
+    @Override
+    public String toString() {
+        return name().toLowerCase();
+    }
 }
