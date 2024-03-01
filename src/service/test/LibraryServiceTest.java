@@ -1,59 +1,84 @@
 package service.test;
-
+import model.Role;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import model.Book;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-import repository.BookRepository;
+import model.User;
 import repository.UserRepository;
+import repository.BookRepository;
 import service.LibraryService;
-
-import java.util.stream.Stream;
-
+import util.MyArrayList;
+import static org.junit.jupiter.api.Assertions.*;
 
 class LibraryServiceTest {
-
     private LibraryService libraryService;
     private BookRepository bookRepository;
     private UserRepository userRepository;
 
 
-    @org.junit.jupiter.api.BeforeEach
-    void setUp() {
+    @BeforeEach
+    void setUp(){
         bookRepository = new BookRepository();
         userRepository = new UserRepository();
-        libraryService = new LibraryService(bookRepository, userRepository);
-
+        libraryService = new LibraryService(bookRepository,userRepository);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void addBook() {
-        Book book = new Book("Test1", "Author Tesr");
-        libraryService.addBook("Test1","Author Tesr");
-
+        libraryService.addBook("Test Title","Test Author");
+        assertEquals(1,libraryService.getAllBooks().size());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getAllBooks() {
+        libraryService.addBook("Puss in boots","Scharl Pero");
+        libraryService.addBook("Числа","Виктор Пелевин");
+        assertEquals(2,libraryService.getAllBooks().size());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void searchBooksByTitle() {
+        libraryService.addBook("Puss in boots","Scharl Pero");
+        libraryService.addBook("Puss in boots","Scharl Pero");
+        MyArrayList<Book> books = libraryService.searchBooksByTitle("puss");
+        assertEquals(2,books.size());
+
+    }
+    @Test
+    void BorrowBook() {
+        String title = "1984";
+        String author = "George Orwell";
+        libraryService.addBook(title, author);
+        boolean isBorrowed = libraryService.borrowBook(title, author);
+        assertTrue(isBorrowed);
+        Book book = bookRepository.findBookByTitleAndAuthor(title, author);
+        assertNotNull(book);
+        assertFalse(book.isAvailable());
     }
 
-    @org.junit.jupiter.api.Test
-    void borrowBook() {
-    }
-
-    @org.junit.jupiter.api.Test
+    @Test
     void returnBook() {
+        Book book = new Book("1984","George Orwell");
+        book.setAvailable(false);
+        bookRepository.addBook(book);
+        libraryService.returnBook("1984","George Orwell");
+        assertTrue(book.isAvailable());
     }
 
-    @org.junit.jupiter.api.Test
-    void addUser() {
+    @Test
+    void testAddUser() {
+        User user = new User("Test@email","Qwerty",Role.USER);
+        libraryService.registerUser(user);
+        assertNotNull(userRepository.findUserByEmail("Test@email"));
     }
 
-    @org.junit.jupiter.api.Test
-    void getUserByName() {
-    }
+//    @Test
+//    void getUserByEmail() {
+//        User user = new User("valid@test.com","Qwerty",Role.USER);
+//        User user2 = new User("Testo2@email","Qwerty",Role.USER);
+//        assertNotNull(user);
+//        String validEmail = "valid@test.com";
+//        Assertions.assertEquals("valid@test.com", libraryService.getUserByEmail("valid@test.com"));
+//    }
 }
