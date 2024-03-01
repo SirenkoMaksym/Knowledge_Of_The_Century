@@ -25,10 +25,10 @@ public class BookRepository {
         return foundBooks;
     }
 
-    public Book findBookByTitleAndAuthor(String title, String author) {
+    public Book findBookByTitle(String title) {
         for (int i = 0; i < books.size(); i++) {
             Book book = books.get(i);
-            if (book.getTitle().equalsIgnoreCase(title) && book.getAuthor().equalsIgnoreCase(author)) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
                 return book;
             }
         }
@@ -38,4 +38,17 @@ public class BookRepository {
     public void updateBookAvailability(Book book, boolean isAvailable) {
         book.setAvailable(isAvailable);
     }
+
+    public void updateBook(Book updatedBook) {
+        for (int i = 0; i <books.size() ; i++) {
+            Book book = books.get(i);
+            if (book.getTitle().equals(updatedBook.getTitle()) && book.getAuthor().equals(updatedBook.getAuthor())) {
+                books.set(i, updatedBook);
+                System.out.println("Информация о книге была успешно обновлена.");
+                return;
+            }
+        }
+        System.out.println("Книга не найдена.");
+    }
+
 }

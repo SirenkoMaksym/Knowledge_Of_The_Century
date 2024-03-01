@@ -39,10 +39,10 @@ class LibraryServiceTest {
 
     @Test
     void searchBooksByTitle() {
-        libraryService.addBook("Puss in boots","Scharl Pero");
+        libraryService.addBook("Gans in boots","Scharl Pero");
         libraryService.addBook("Puss in boots","Scharl Pero");
         MyArrayList<Book> books = libraryService.searchBooksByTitle("puss");
-        assertEquals(2,books.size());
+        assertEquals(1,books.size());
 
     }
     @Test
@@ -73,12 +73,13 @@ class LibraryServiceTest {
         assertNotNull(userRepository.findUserByEmail("Test@email"));
     }
 
-//    @Test
-//    void getUserByEmail() {
-//        User user = new User("valid@test.com","Qwerty",Role.USER);
-//        User user2 = new User("Testo2@email","Qwerty",Role.USER);
-//        assertNotNull(user);
-//        String validEmail = "valid@test.com";
-//        Assertions.assertEquals("valid@test.com", libraryService.getUserByEmail("valid@test.com"));
-//    }
+    @Test
+    void getUserByEmail() {
+        User user = new User("test@mail.com","password",Role.USER);
+        userRepository.addUser(user);
+        User foundUser = libraryService.getUserByEmail("test@mail.com");
+        assertNotNull(foundUser);
+        assertEquals("test@mail.com",foundUser.getEmail());
+    }
+
 }

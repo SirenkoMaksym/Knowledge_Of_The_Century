@@ -9,11 +9,22 @@ public class Book {
     private String title;
     private String author;
     private boolean isAvailable;
+    private User bookHolder = null;
+
 
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
-        this.isAvailable = true; // По умолчанию книга доступна
+        this.isAvailable = isAvailable;
+        this.bookHolder = bookHolder;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     // Getters и Setters
@@ -31,6 +42,14 @@ public class Book {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+
+    public User getBookHolder() {
+        return bookHolder;
+    }
+
+    public void setBookHolder(User bookHolder) {
+        this.bookHolder = bookHolder;
     }
 
     @Override
