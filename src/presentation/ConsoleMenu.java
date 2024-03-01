@@ -109,7 +109,16 @@ public class ConsoleMenu {
         String title = scanner.nextLine();
         System.out.print("Введите автора книги: ");
         String author = scanner.nextLine();
-        boolean success = libraryService.borrowBook(title);
+
+     //   boolean success = libraryService.borrowBook(title);
+
+        User currentUser = libraryService.getActiveUser();
+                if (currentUser == null){
+                    System.out.println("Ошибка нужен вход в систему.");
+                    return;
+                }
+        boolean success = libraryService.borrowBook(title, author);
+
         if (success) {
             System.out.println("Книга успешно взята.");
         } else {
