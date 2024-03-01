@@ -1,6 +1,7 @@
 package service;
 
 import model.Book;
+import model.Role;
 import model.User;
 import repository.BookRepository;
 import repository.UserRepository;
@@ -93,5 +94,32 @@ public class LibraryService {
             return userRepository.findUserByEmail(email);
         }
         return null;
+    }
+
+    public void editBookInfo(String oldTitle, String newTitle, String newAuthor, User user) {
+        if (user.getRole() != Role.ADMIN) {
+            System.out.println("Ошибка: доступ только для Администраторов");
+            return;
+        }
+        Book book = bookRepository.findBookByTitle(oldTitle);
+        if (book != null) {
+            book.setTitle(newTitle);
+            book.setAuthor(newAuthor);
+            bookRepository.updateBook(book);
+            System.out.println("Информация о книге успешно обновлена.");
+        } else {
+            System.out.println("Книга с названием " + oldTitle + " не найдена.");
+        }
+    }
+
+    public void checkBookUser(String title) {
+        Book book = bookRepository.findBookByTitle(title);
+        if (book != null && !book.isAvailable()){
+            System.out.println("Книга: " +title + "находится у пользователя: "+ book.getBookHolder());
+        } else if (book != null) {
+            System.out.println("Книга: " + title + "доступна.");
+        }else {
+            System.out.println("Книга с названием : " + title+ " не найдена.");
+        }
     }
 }
