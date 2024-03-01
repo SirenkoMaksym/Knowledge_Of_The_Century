@@ -7,17 +7,32 @@ package model;
 
 public class User {
 
-    private String name;
+    private String email;
+    private String password;
     private Role role;
 
-    public User(String name, Role role) {
-        this.name = name;
+    public User(String email, String password, Role role) {
+        this.email = email;
         this.role = role;
+        this.password = password;
     }
 
     // Getters и Setters
-    public String getName() {
-        return name;
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public Role getRole() {
@@ -26,6 +41,6 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("Имя: %s, Роль: %s", name, role);
+        return String.format("Имя: %s, Роль: %s", email, role);
     }
 }

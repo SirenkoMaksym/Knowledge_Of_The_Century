@@ -5,6 +5,9 @@ import model.User;
 import repository.BookRepository;
 import repository.UserRepository;
 import util.MyArrayList;
+import util.MyList;
+
+import java.util.Objects;
 
 public class LibraryService {
     private final BookRepository bookRepository;
@@ -49,12 +52,46 @@ public class LibraryService {
 
     //////////////////////////////////////////////////////
 
+    private User activeUser;
 
-    public void addUser(String name, String role) {
-        User newUser = new User(name, role.equals("admin") ? model.Role.ADMIN : model.Role.USER);
+    public void addUser(User user) {
+        User newUser = new User(user.getEmail(), user.getPassword(), Objects.equals(user.getRole().toString(),
+                "admin") ? model.Role.ADMIN : model.Role.USER);
         userRepository.addUser(newUser);
     }
-    public User getUserByName(String name) {
-        return userRepository.findUserByName(name);
+
+    public User getUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    //TODO Валидацию пароля и емейла допилю позже... как и выход из авторизации
+    public void registerUser(User user) {
+        if (user.getEmail() == null || user.getPassword() == null) {
+            System.out.println("Пустой Email или пароль");
+            return;
+        }
+        if (userRepository.isUserEmailExist(user.getEmail())) {
+            System.out.println("Пользователь с таким E-mail уже существует!");
+            return;
+        }
+        System.out.println("Успешно зарегистрирован!");
+        userRepository.addUser(user);
+
+    }
+
+    public User getActiveUser() {
+        return activeUser;
+    }
+
+    public User autorise(String email, String password) {
+        if (email == null || password == null) {
+            System.out.println("Пустой Email или пароль");
+            return null;
+        }
+        if (userRepository.findUserByEmail(email).getPassword().equals(password)) {
+            activeUser = userRepository.findUserByEmail(email);
+            return userRepository.findUserByEmail(email);
+        }
+        return null;
     }
 }
