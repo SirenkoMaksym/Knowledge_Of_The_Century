@@ -1,6 +1,7 @@
 package presentation;
 
 import model.Book;
+import model.Role;
 import model.User;
 import service.LibraryService;
 import util.MyArrayList;
@@ -25,9 +26,10 @@ public class ConsoleMenu {
             System.out.println("3. Поиск книги по названию");
             System.out.println("4. Взять книгу");
             System.out.println("5. Вернуть книгу");
-            System.out.println("6. Добавить пользователя");
+            System.out.println("6. Добавить пользователя(регистрация)");
             System.out.println("7. Показать пользователя по имени");
-            System.out.println("8. Выйти");
+            System.out.println("8. Авторизация пользователя");
+            System.out.println("9. Выйти");
             System.out.print("Выберите опцию: ");
 
             int choice = scanner.nextInt();
@@ -56,6 +58,9 @@ public class ConsoleMenu {
                     showUser();
                     break;
                 case 8:
+                    autoriseUser();
+                    break;
+                case 9:
                     System.out.println("Выход из программы...");
                     return;
                 default:
@@ -126,22 +131,40 @@ public class ConsoleMenu {
     }
 
     private void addUser() {
-        System.out.print("Введите имя пользователя: ");
-        String name = scanner.nextLine();
+        System.out.print("Введите E-mail пользователя: ");
+        String email = scanner.nextLine();
         System.out.print("Введите роль пользователя (admin/user): ");
         String role = scanner.nextLine();
-        libraryService.addUser(name, role);
-        System.out.println("Пользователь добавлен.");
+        System.out.print("Введите пароль: ");
+        String password = scanner.nextLine();
+        libraryService.registerUser(new User(email, password, ((Role.USER.toString().equals(role))) ? Role.USER : Role.ADMIN));
+        System.out.println("Пользователь добавлен(зарегистрирован).");
     }
 
     private void showUser() {
         System.out.print("Введите имя пользователя для поиска: ");
-        String name = scanner.nextLine();
-        User user = libraryService.getUserByName(name);
+        String email = scanner.nextLine();
+        User user = libraryService.getUserByEmail(email);
         if (user != null) {
             System.out.println("Информация о пользователе: " + user.toString());
         } else {
             System.out.println("Пользователь не найден.");
         }
+    }
+    private void autoriseUser() {
+        System.out.print("Введите E-mail пользователя: ");
+        String email = scanner.nextLine();
+        System.out.print("Введите пароль: ");
+        String password = scanner.nextLine();
+        User user = libraryService.autorise(email, password);
+        if (user != null) {
+            System.out.println("Пользователь успешно авторизован: " + user.toString());
+        } else {
+            System.out.println("Пользователь с таким E-mail или паролем не найден!");
+        }
+    }
+    private void waitRead() {
+        System.out.println("\nДля продолжения нажмите Enter...");
+        scanner.nextLine();
     }
 }
