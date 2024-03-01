@@ -44,7 +44,7 @@ public class LibraryService {
     public boolean returnBook(String title, String author) {
         Book book = bookRepository.findBookByTitleAndAuthor(title, author);
         if (book != null && !book.isAvailable()) {
-            bookRepository.updateBookAvailability(book, true);
+            bookRepository.updateBookAvailability(book, true);// book.isAvaiable
             return true;
         }
         return false;
