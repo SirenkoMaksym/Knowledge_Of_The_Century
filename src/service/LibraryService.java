@@ -28,14 +28,14 @@ public class LibraryService {
         return bookRepository.findAllBooks();
     }
 
-    public MyArrayList<Book> searchBooksByTitle(String title) {
+    public Book searchBooksByTitle(String title) {
         return bookRepository.findBooksByTitle(title);
     }
 
     public boolean borrowBook(String title, String author) {
         Book book = bookRepository.findBookByTitleAndAuthor(title, author);
         if (book != null && book.isAvailable()) {
-            bookRepository.updateBookAvailability(book, false);
+            bookRepository.updateBookAvailability(book);
             return true;
         }
         return false;
@@ -44,7 +44,7 @@ public class LibraryService {
     public boolean returnBook(String title, String author) {
         Book book = bookRepository.findBookByTitleAndAuthor(title, author);
         if (book != null && !book.isAvailable()) {
-            bookRepository.updateBookAvailability(book, true);// book.isAvaiable
+            bookRepository.updateBookAvailability(book);
             return true;
         }
         return false;

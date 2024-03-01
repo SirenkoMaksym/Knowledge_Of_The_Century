@@ -14,15 +14,20 @@ public class BookRepository {
         return books;
     }
 
-    public MyArrayList<Book> findBooksByTitle(String title) {
-        MyArrayList<Book> foundBooks = new MyArrayList<>();
+    public Book findBooksByTitle(String title) {
+        if (title == null) {
+            System.out.println("Ничего не введено!");
+            return null;
+        }
+        Book foundBooks;
         for (int i = 0; i < books.size(); i++) {
             Book book = books.get(i);
             if (book.getTitle().toLowerCase().contains(title.toLowerCase())) {
-                foundBooks.add(book);
+                foundBooks = books.get(i);
+                return foundBooks;
             }
-        }
-        return foundBooks;
+            System.out.println("Книга не найдена!");
+        } return null;
     }
 
     public Book findBookByTitleAndAuthor(String title, String author) {
@@ -35,7 +40,7 @@ public class BookRepository {
         return null;
     }
 
-    public void updateBookAvailability(Book book, boolean isAvailable) {
-        book.setAvailable(isAvailable);
+    public void updateBookAvailability(Book book) {
+        book.setAvailable(true);
     }
 }

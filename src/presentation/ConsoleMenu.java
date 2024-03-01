@@ -5,6 +5,8 @@ import model.Role;
 import model.User;
 import service.LibraryService;
 import util.MyArrayList;
+
+import javax.lang.model.element.NestingKind;
 import java.util.Scanner;
 
 public class ConsoleMenu {
@@ -93,15 +95,9 @@ public class ConsoleMenu {
     private void searchBooks() {
         System.out.print("Введите название книги для поиска: ");
         String title = scanner.nextLine();
-        MyArrayList<Book> foundBooks = libraryService.searchBooksByTitle(title);
-        if (foundBooks.size() == 0) {
-            System.out.println("Книги не найдены.");
-        } else {
-            System.out.println("Найденные книги:");
-            for (int i = 0; i < foundBooks.size(); i++) {
-                System.out.println((i + 1) + ". " + foundBooks.get(i).toString());
-            }
-        }
+        Book foundBooks = libraryService.searchBooksByTitle(title);
+        String vollTitle = foundBooks.getTitle();
+        System.out.println("Ваша книга: " + vollTitle + "найдена!");
     }
 
     private void borrowBook() {
