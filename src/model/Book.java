@@ -9,7 +9,7 @@ public class Book {
     private String title;
     private String author;
     private boolean isAvailable;
-    private User bookHolder = null;
+    private User bookHolder;
 
 
     public Book(String title, String author) {

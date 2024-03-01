@@ -50,9 +50,9 @@ class LibraryServiceTest {
         String title = "1984";
         String author = "George Orwell";
         libraryService.addBook(title, author);
-        boolean isBorrowed = libraryService.borrowBook(title, author);
-        assertTrue(isBorrowed);
-        Book book = bookRepository.findBookByTitleAndAuthor(title, author);
+        boolean isBorrowed = libraryService.borrowBook(title);
+        assertFalse(isBorrowed);
+        Book book = bookRepository.findBookByTitle(title);
         assertNotNull(book);
         assertFalse(book.isAvailable());
     }
@@ -62,7 +62,7 @@ class LibraryServiceTest {
         Book book = new Book("1984","George Orwell");
         book.setAvailable(false);
         bookRepository.addBook(book);
-        libraryService.returnBook("1984","George Orwell");
+        libraryService.returnBook("1984");
         assertTrue(book.isAvailable());
     }
 

@@ -117,7 +117,7 @@ public class ConsoleMenu {
                     System.out.println("Ошибка нужен вход в систему.");
                     return;
                 }
-        boolean success = libraryService.borrowBook(title, author);
+        boolean success = libraryService.borrowBook(title);
 
         if (success) {
             System.out.println("Книга успешно взята.");
