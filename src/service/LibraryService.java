@@ -32,8 +32,12 @@ public class LibraryService {
         return bookRepository.findBooksByTitle(title);
     }
 
-    public boolean borrowBook(String title, String author) {
-        Book book = bookRepository.findBookByTitleAndAuthor(title, author);
+    public MyArrayList<Book> searchBooksByAuthor(String author){
+        return bookRepository.searchBooksByAuthor(author);
+    }
+
+    public boolean borrowBook(String title) {
+        Book book = bookRepository.findBookByTitle(title);
         if (book != null && book.isAvailable()) {
             bookRepository.updateBookAvailability(book, false);
             return true;
@@ -41,14 +45,15 @@ public class LibraryService {
         return false;
     }
 
-    public boolean returnBook(String title, String author) {
-        Book book = bookRepository.findBookByTitleAndAuthor(title, author);
+    public boolean returnBook(String title) {
+        Book book = bookRepository.findBookByTitle(title);
         if (book != null && !book.isAvailable()) {
             bookRepository.updateBookAvailability(book, true);// book.isAvaiable
             return true;
         }
         return false;
     }
+
 
     //////////////////////////////////////////////////////
 

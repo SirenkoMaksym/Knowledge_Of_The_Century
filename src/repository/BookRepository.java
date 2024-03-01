@@ -25,10 +25,22 @@ public class BookRepository {
         return foundBooks;
     }
 
-    public Book findBookByTitleAndAuthor(String title, String author) {
+    public MyArrayList<Book> searchBooksByAuthor(String author){
+        MyArrayList<Book> allBooks = new MyArrayList<>();
+
+        for (int i = 0; i < allBooks.size(); i++) {
+            Book book = allBooks.get(i);
+            if (book.getAuthor().equals(author)){
+                allBooks.add(book);
+            }
+        }
+        return allBooks;
+    }
+
+    public Book findBookByTitle(String title ) {
         for (int i = 0; i < books.size(); i++) {
             Book book = books.get(i);
-            if (book.getTitle().equalsIgnoreCase(title) && book.getAuthor().equalsIgnoreCase(author)) {
+            if (book.getTitle().equalsIgnoreCase(title)){
                 return book;
             }
         }

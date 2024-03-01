@@ -109,7 +109,7 @@ public class ConsoleMenu {
         String title = scanner.nextLine();
         System.out.print("Введите автора книги: ");
         String author = scanner.nextLine();
-        boolean success = libraryService.borrowBook(title, author);
+        boolean success = libraryService.borrowBook(title);
         if (success) {
             System.out.println("Книга успешно взята.");
         } else {
@@ -122,7 +122,7 @@ public class ConsoleMenu {
         String title = scanner.nextLine();
         System.out.print("Введите автора книги: ");
         String author = scanner.nextLine();
-        boolean success = libraryService.returnBook(title, author);
+        boolean success = libraryService.returnBook(title);
         if (success) {
             System.out.println("Книга успешно возвращена.");
         } else {
