@@ -54,6 +54,7 @@ public class ConsoleMenu {
             System.out.println("3. Добавить книгу ");
             System.out.println("4. Показать все книги");
             System.out.println("5. Показать пользователя по имени");
+            System.out.println("6. Показать какую книгу взял пользователь");
             System.out.println("0. Возврат в предыдущее меню");
             System.out.print("\nВыберите опцию: ");
 
@@ -87,6 +88,10 @@ public class ConsoleMenu {
                 break;
             case 5:
                 showUser();
+                waitRead();
+                break;
+            case 6:
+                checkBookUser();
                 waitRead();
                 break;
             case 0:
@@ -155,7 +160,11 @@ public class ConsoleMenu {
             }
         }
 
-
+        private void checkBookUser(){
+            System.out.println("Введите название книги: ");
+            String title = scanner.nextLine();
+            libraryService.checkBookUser(title);
+        }
 
     private void addBook() {
         System.out.print("Введите название книги: ");
