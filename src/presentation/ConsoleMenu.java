@@ -24,8 +24,8 @@ public class ConsoleMenu {
     private void showMenu() {
         while (true) {
             System.out.println("*** Добро пожаловать в Библиотеку ***");
-            System.out.println("1. Админ меню");
-            System.out.println("2. Меню пользователя");
+            System.out.println("1. Регистрация");
+            System.out.println("2. Авторизация");
             System.out.println("0. Выйти");
             System.out.print("\nВыберите опцию: ");
 
@@ -36,9 +36,9 @@ public class ConsoleMenu {
                 break;
             }
             if (choice == 1) {
-                showAdminMenu();
+                addUser();
             } else if (choice == 2) {
-            showUserMenu();
+            autoriseUser();
             }else {
                 System.out.println("Неверный ввод");
                 waitRead();
@@ -46,15 +46,14 @@ public class ConsoleMenu {
         }
     }
 
+
     private void showAdminMenu() {
         while (true) {
             System.out.println("=== Admin Menu ===");
-            System.out.println("1. Регистрация");
-            System.out.println("2. Авторизация");
-            System.out.println("3. Добавить книгу ");
-            System.out.println("4. Показать все книги");
-            System.out.println("5. Показать пользователя по имени");
-            System.out.println("6. Показать какую книгу взял пользователь");
+            System.out.println("1. Добавить книгу ");
+            System.out.println("2. Показать все книги");
+            System.out.println("3. Показать пользователя по имени");
+            System.out.println("4. Показать какую книгу взял пользователь");
             System.out.println("0. Возврат в предыдущее меню");
             System.out.print("\nВыберите опцию: ");
 
@@ -70,27 +69,20 @@ public class ConsoleMenu {
 
     private void showSubAdminMenu(int choice){
         switch (choice){
+
             case 1:
-                addUser();
-                waitRead();
-                break;
-            case 2:
-                autoriseUser();
-                waitRead();
-                break;
-            case 3:
                 addBook();
                 waitRead();
                 break;
-            case 4:
+            case 2:
                 showAllBooks();
                 waitRead();
                 break;
-            case 5:
+            case 3:
                 showUser();
                 waitRead();
                 break;
-            case 6:
+            case 4:
                 checkBookUser();
                 waitRead();
                 break;
@@ -106,12 +98,11 @@ public class ConsoleMenu {
     private void showUserMenu() {
         while (true) {
             System.out.println("=== User Menu ===");
-            System.out.println("1. Добавить пользователя");
-            System.out.println("2. Авторизация пользователя");
-            System.out.println("3. Показать все книги");
-            System.out.println("4. Взять книгу");
-            System.out.println("5. Вернуть книгу");
-            System.out.println("5. Поиск книги по названию");
+            System.out.println("1. Показать все книги");
+            System.out.println("2. Взять книгу");
+            System.out.println("3. Вернуть книгу");
+            System.out.println("4. Поиск книги по названию");
+            System.out.println("5. Поиск книги по автору");
             System.out.println("0. Возврат в предыдущее меню");
             System.out.print("\nВыберите опцию: ");
 
@@ -127,28 +118,25 @@ public class ConsoleMenu {
     private void showSubUserMenu (int choice){
             switch (choice) {
 
+
                 case 1:
-                    addUser();
-                    waitRead();
-                    break;
-                case 2:
-                    autoriseUser();
-                    waitRead();
-                    break;
-                case 3:
                     showAllBooks();
                     waitRead();
                     break;
-                case 4:
+                case 2:
                     borrowBook();
                     waitRead();
                     break;
-                case 5:
+                case 3:
                     returnBook();
                     waitRead();
                     break;
-                case 6:
+                case 4:
                     searchBooks();
+                    waitRead();
+                    break;
+                case 5:
+                    searchBooksByAuthor();
                     waitRead();
                     break;
                 case 0:
@@ -158,6 +146,12 @@ public class ConsoleMenu {
                     System.out.println("Неверный ввод. Пожалуйста, выберите правильный номер опции.");
                     waitRead();
             }
+        }
+
+        private void searchBooksByAuthor(){
+            System.out.println("Введите автора книги: ");
+            String author = scanner.nextLine();
+            libraryService.searchBooksByAuthor(author);
         }
 
         private void checkBookUser(){
@@ -265,6 +259,11 @@ public class ConsoleMenu {
         User user = libraryService.autorise(email, password);
         if (user != null) {
             System.out.println("Пользователь успешно авторизован: " + user.toString());
+            if (user.getRole() == Role.ADMIN){
+                showAdminMenu();
+            }else {
+            showUserMenu();
+            }
         } else {
             System.out.println("Пользователь с таким E-mail или паролем не найден!");
         }
