@@ -10,64 +10,152 @@ import java.util.Scanner;
 public class ConsoleMenu {
     private final LibraryService libraryService;
 
-    private final Scanner scanner;
+    private final Scanner scanner = new Scanner(System.in);
 
     public ConsoleMenu(LibraryService libraryService) {
         this.libraryService = libraryService;
 
-        this.scanner = new Scanner(System.in);
     }
 
-    public void showMenu() {
+    public void run(){
+        showMenu();
+    }
+
+    private void showMenu() {
         while (true) {
-            System.out.println("\n*** Библиотечное Меню ***");
-            System.out.println("1. Добавить книгу");
-            System.out.println("2. Показать все книги");
-            System.out.println("3. Поиск книги по названию");
-            System.out.println("4. Взять книгу");
-            System.out.println("5. Вернуть книгу");
-            System.out.println("6. Добавить пользователя(регистрация)");
-            System.out.println("7. Показать пользователя по имени");
-            System.out.println("8. Авторизация пользователя");
-            System.out.println("9. Выйти");
-            System.out.print("Выберите опцию: ");
+            System.out.println("*** Добро пожаловать в Библиотеку ***");
+            System.out.println("1. Админ меню");
+            System.out.println("2. Меню пользователя");
+            System.out.println("0. Выйти");
+            System.out.print("\nВыберите опцию: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // Чтобы избежать проблем с чтением следующей строки
-
-            switch (choice) {
-                case 1:
-                    addBook();
-                    break;
-                case 2:
-                    showAllBooks();
-                    break;
-                case 3:
-                    searchBooks();
-                    break;
-                case 4:
-                    borrowBook();
-                    break;
-                case 5:
-                    returnBook();
-                    break;
-                case 6:
-                    addUser();
-                    break;
-                case 7:
-                    showUser();
-                    break;
-                case 8:
-                    autoriseUser();
-                    break;
-                case 9:
-                    System.out.println("Выход из программы...");
-                    return;
-                default:
-                    System.out.println("Неверный ввод. Пожалуйста, выберите правильный номер опции.");
+            if (choice == 0) {
+                System.out.println("Выход из программы...");
+                break;
+            }
+            if (choice == 1) {
+                showAdminMenu();
+            } else if (choice == 2) {
+            showUserMenu();
+            }else {
+                System.out.println("Неверный ввод");
+                waitRead();
             }
         }
     }
+
+    private void showAdminMenu() {
+        while (true) {
+            System.out.println("=== Admin Menu ===");
+            System.out.println("1. Регистрация");
+            System.out.println("2. Авторизация");
+            System.out.println("3. Добавить книгу ");
+            System.out.println("4. Показать все книги");
+            System.out.println("5. Показать пользователя по имени");
+            System.out.println("0. Возврат в предыдущее меню");
+            System.out.print("\nВыберите опцию: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Чтобы избежать проблем с чтением следующей строки
+            if (choice == 0) {
+                System.out.println("Возврат в предыдущее меню");
+                break;
+            }
+            showSubAdminMenu(choice);
+        }
+    }
+
+    private void showSubAdminMenu(int choice){
+        switch (choice){
+            case 1:
+                addUser();
+                waitRead();
+                break;
+            case 2:
+                autoriseUser();
+                waitRead();
+                break;
+            case 3:
+                addBook();
+                waitRead();
+                break;
+            case 4:
+                showAllBooks();
+                waitRead();
+                break;
+            case 5:
+                showUser();
+                waitRead();
+                break;
+            case 0:
+                System.out.println("Возврат в предыдущее меню");
+                return;
+            default:
+                System.out.println("Неверный ввод. Пожалуйста, сделайте правильный выбор.");
+                waitRead();
+        }
+    }
+
+    private void showUserMenu() {
+        while (true) {
+            System.out.println("=== User Menu ===");
+            System.out.println("1. Добавить пользователя");
+            System.out.println("2. Авторизация пользователя");
+            System.out.println("3. Показать все книги");
+            System.out.println("4. Взять книгу");
+            System.out.println("5. Вернуть книгу");
+            System.out.println("5. Поиск книги по названию");
+            System.out.println("0. Возврат в предыдущее меню");
+            System.out.print("\nВыберите опцию: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Чтобы избежать проблем с чтением следующей строки
+            if (choice == 0) {
+                System.out.println("Возврат в предыдущее меню");
+                break;
+            }
+            showSubUserMenu(choice);
+        }
+    }
+    private void showSubUserMenu (int choice){
+            switch (choice) {
+
+                case 1:
+                    addUser();
+                    waitRead();
+                    break;
+                case 2:
+                    autoriseUser();
+                    waitRead();
+                    break;
+                case 3:
+                    showAllBooks();
+                    waitRead();
+                    break;
+                case 4:
+                    borrowBook();
+                    waitRead();
+                    break;
+                case 5:
+                    returnBook();
+                    waitRead();
+                    break;
+                case 6:
+                    searchBooks();
+                    waitRead();
+                    break;
+                case 0:
+                    System.out.println("Возврат в предыдущее меню");
+                    return;
+                default:
+                    System.out.println("Неверный ввод. Пожалуйста, выберите правильный номер опции.");
+                    waitRead();
+            }
+        }
+
+
 
     private void addBook() {
         System.out.print("Введите название книги: ");

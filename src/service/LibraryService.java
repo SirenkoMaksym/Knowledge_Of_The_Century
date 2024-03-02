@@ -22,6 +22,7 @@ public class LibraryService {
 
     public void addBook(String title, String author) {
         Book newBook = new Book(title, author);
+        newBook.setAvailable(true);// Устанавливаем что после добавления книги она доступна
         bookRepository.addBook(newBook);
     }
 
