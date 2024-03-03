@@ -27,15 +27,15 @@ public class BookRepository {
 
 
     public MyArrayList<Book> searchBooksByAuthor(String author){
-        MyArrayList<Book> allBooks = new MyArrayList<>();
+        MyArrayList<Book> foundBooks = new MyArrayList<>();
 
-        for (int i = 0; i < allBooks.size(); i++) {
-            Book book = allBooks.get(i);
-            if (book.getAuthor().equals(author)){
-                allBooks.add(book);
+        for (int i = 0; i < books.size(); i++) {
+            Book book = books.get(i);
+            if (book.getAuthor().equalsIgnoreCase(author)){
+                foundBooks.add(book);
             }
         }
-        return allBooks;
+        return foundBooks;
     }
 
     public Book findBookByTitle(String title ) {

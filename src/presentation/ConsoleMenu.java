@@ -151,7 +151,15 @@ public class ConsoleMenu {
         private void searchBooksByAuthor(){
             System.out.println("Введите автора книги: ");
             String author = scanner.nextLine();
-            libraryService.searchBooksByAuthor(author);
+            MyArrayList<Book> searchBooksByAuthor = libraryService.searchBooksByAuthor(author);
+            if (searchBooksByAuthor.size() == 0) {
+                System.out.println("Книги не найдены.");
+            } else {
+                System.out.println("Найденные книги:");
+                for (int i = 0; i < searchBooksByAuthor.size(); i++) {
+                    System.out.println((i + 1) + ". " + searchBooksByAuthor.get(i).toString());
+                }
+            }
         }
 
         private void checkBookUser(){
@@ -238,7 +246,7 @@ public class ConsoleMenu {
         System.out.print("Введите пароль: ");
         String password = scanner.nextLine();
         libraryService.registerUser(new User(email, password, ((Role.USER.toString().equals(role))) ? Role.USER : Role.ADMIN));
-        System.out.println("Пользователь добавлен(зарегистрирован).");
+
     }
 
     private void showUser() {

@@ -18,7 +18,7 @@ public class UserRepository {
         init();
     }
     private void init() {
-        User adminUser = new User("admin@email.net", "adminPassword", Role.ADMIN);
+        User adminUser = new User("admin@email.net", "admin123", Role.ADMIN);
         User user1 = new User("test1@email.net", "1qwerty!Q1", Role.USER);
         User user2 = new User("test2@email.net", "3qwerty!Q1", Role.USER);
         User user3 = new User("test3@email.net", "4qwerty!Q1", Role.USER);
