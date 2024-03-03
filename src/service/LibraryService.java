@@ -37,11 +37,11 @@ public class LibraryService {
         return bookRepository.searchBooksByAuthor(author);
     }
 
-    public boolean borrowBook(String title) {
+    public boolean borrowBook(String title, User user) {
         Book book = bookRepository.findBookByTitle(title);
         if (book != null && book.isAvailable()) {
-            bookRepository.updateBookAvailability(book, false);
-            return true;
+            book.setAvailable(false);
+
         }
         return false;
     }
