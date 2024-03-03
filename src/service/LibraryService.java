@@ -34,7 +34,7 @@ public class LibraryService {
         return bookRepository.findBooksByTitle(title);
     }
 
-    public MyArrayList<Book> searchBooksByAuthor(String author){
+    public MyArrayList<Book> searchBooksByAuthor(String author) {
         return bookRepository.searchBooksByAuthor(author);
     }
 
@@ -75,7 +75,80 @@ public class LibraryService {
         return userRepository.findUserByEmail(email);
     }
 
-    //TODO Валидацию пароля и емейла допилю позже... как и выход из авторизации
+    private boolean isPasswordValid(String password) {
+        if (password == null || password.length() < 8) return false;
+
+        boolean isLowerCase = false;
+        boolean isUpperCase = false;
+        boolean isDigit = false;
+        boolean isSpecialSymbol = false;
+        boolean[] res = new boolean[4];
+
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+
+            if (Character.isDigit(c)) {
+                isDigit = true;
+                res[0] = true;
+                continue;
+            }
+
+            if (Character.isLowerCase(c)) {
+                isLowerCase = true;
+                res[1] = true;
+                continue;
+            }
+
+            if (Character.isUpperCase(c)) {
+                isUpperCase = true;
+                continue;
+            }
+
+            if ("!%$@&*()[]".indexOf(c) >= 0) {
+                isSpecialSymbol = true;
+                continue;
+            }
+        }
+
+
+        return isLowerCase && isUpperCase && isDigit && isSpecialSymbol;
+    }
+
+
+    private boolean isEmailValid(String email) {
+        if (email == null || email.isEmpty()) return false;
+        int indexAt = email.indexOf('@');
+        if (indexAt <= 0 || indexAt != email.lastIndexOf('@')) return false;
+        int indexFirstDotAfterAt = email.indexOf('.', indexAt);
+        if (indexFirstDotAfterAt == -1 || indexFirstDotAfterAt == indexAt + 1) return false;
+        if (email.lastIndexOf('.') >= email.length() - 2) return false;
+        boolean isCharAlphabetic = Character.isAlphabetic(email.charAt(0));
+        if (!isCharAlphabetic) return false;
+        for (int i = 0; i < email.length(); i++) {
+            char c = email.charAt(i);
+            boolean isCharValid = (
+                    Character.isAlphabetic(c)
+                            || Character.isDigit(c)
+                            || c == '-'
+                            || c == '_'
+                            || c == '.'
+                            || c == '@'
+            );
+
+            if (!isCharValid) return false;
+
+        }
+
+        return true;
+    }
+
+    private boolean isRoleValid(String role) {
+        if (role.equalsIgnoreCase("user")) return true;
+        if (role.equalsIgnoreCase("admin")) {
+            return true;
+        }else return false;
+    }
+
     public void registerUser(User user) {
         if (user.getEmail() == null || user.getPassword() == null) {
             System.out.println("Пустой Email или пароль");
@@ -85,9 +158,12 @@ public class LibraryService {
             System.out.println("Пользователь с таким E-mail уже существует!");
             return;
         }
-        System.out.println("Успешно зарегистрирован!");
-        userRepository.addUser(user);
-
+        if (isEmailValid(user.getEmail()) && isPasswordValid(user.getPassword()) && isRoleValid(user.getRole().toString())) {
+            System.out.println("Успешно зарегистрирован!");
+            userRepository.addUser(user);
+        } else {
+            System.out.println("Пароль, Роль или Е-маил введен некорректно!");
+        }
     }
 
     public User getActiveUser() {
@@ -124,12 +200,12 @@ public class LibraryService {
 
     public void checkBookUser(String title) {
         Book book = bookRepository.findBookByTitle(title);
-        if (book != null && !book.isAvailable()){
-            System.out.println("Книга: " +title + "находится у пользователя: "+ book.getBookHolder());
+        if (book != null && !book.isAvailable()) {
+            System.out.println("Книга: " + title + " находится у пользователя: " + book.getBookHolder());
         } else if (book != null) {
-            System.out.println("Книга: " + title + "доступна.");
-        }else {
-            System.out.println("Книга с названием : " + title+ " не найдена.");
+            System.out.println("Книга: " + title + " доступна.");
+        } else {
+            System.out.println("Книга с названием : " + title + " не найдена.");
         }
     }
 }

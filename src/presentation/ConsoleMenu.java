@@ -245,7 +245,9 @@ public class ConsoleMenu {
         String role = scanner.nextLine();
         System.out.print("Введите пароль: ");
         String password = scanner.nextLine();
-        libraryService.registerUser(new User(email, password, ((Role.USER.toString().equals(role))) ? Role.USER : Role.ADMIN));
+        libraryService.registerUser(new User(email, password, ((Role.USER.toString().equalsIgnoreCase(role) ||
+                Role.ADMIN.toString().equalsIgnoreCase(role))
+                ? Role.valueOf(role.toUpperCase()) : Role.NOUSER)));
 
     }
 
