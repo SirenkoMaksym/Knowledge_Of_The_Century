@@ -22,6 +22,7 @@ public class LibraryService {
 
     public void addBook(String title, String author) {
         Book newBook = new Book(title, author);
+        newBook.setAvailable(true);// Устанавливаем что после добавления книги она доступна
         bookRepository.addBook(newBook);
     }
 
@@ -41,6 +42,8 @@ public class LibraryService {
         Book book = bookRepository.findBookByTitle(title);
         if (book != null && book.isAvailable()) {
             bookRepository.updateBookAvailability(book, false);
+            book.setBookHolder(activeUser);// Устанавливаем пользователя, который взял книгу
+            activeUser.addBorrowedBook(title);// Добавляем книгу в список взятых книг пользователя
             return true;
         }
         return false;
@@ -48,8 +51,10 @@ public class LibraryService {
 
     public boolean returnBook(String title) {
         Book book = bookRepository.findBookByTitle(title);
-        if (book != null && !book.isAvailable()) {
+        if (book != null && !book.isAvailable() && activeUser != null) {
             bookRepository.updateBookAvailability(book, true);// book.isAvaiable
+            book.setBookHolder(null); // Очищаем инфо у кого книга
+            activeUser.removeBorrowedBook(title);// Удаляем книгу из списка взятых книг
             return true;
         }
         return false;

@@ -18,14 +18,15 @@ public class UserRepository {
         init();
     }
     private void init() {
-        User user = new User("test@email.net", "1qwerty!Q1", Role.USER);
-        User user1 = new User("test1@email.net", "2qwerty!Q1", Role.USER);
+        User adminUser = new User("admin@email.net", "admin123", Role.ADMIN);
+        User user1 = new User("test1@email.net", "1qwerty!Q1", Role.USER);
         User user2 = new User("test2@email.net", "3qwerty!Q1", Role.USER);
         User user3 = new User("test3@email.net", "4qwerty!Q1", Role.USER);
         User user4 = new User("test4@email.net", "5qwerty!Q1", Role.USER);
-        user.setRole(Role.ADMIN);
 
-        users.addAll(user, user1, user2, user3, user4);
+
+        users.add(adminUser);
+        users.addAll(adminUser, user1, user2, user3, user4);
     }
 
 

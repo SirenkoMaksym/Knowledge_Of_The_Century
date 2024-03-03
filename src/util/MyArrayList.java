@@ -184,7 +184,7 @@ public class MyArrayList<T> implements MyList<T> {
     //    Удаление элемента по индексу
     @Override
     public T remove(int index) {
-        System.out.println("Remove by index");
+    //    System.out.println("Remove by index");
 
         // 1. Проверка
         if (index < 0 && index >= cursor) {
@@ -207,7 +207,7 @@ public class MyArrayList<T> implements MyList<T> {
 
     @Override
     public boolean remove(T value) {
-        System.out.println("Remove by Value");
+    //    System.out.println("Remove by Value");
         // Понять есть ли такой элемент в массиве
         // Если нет - вернуть false и закончить работу методы
         // если есть - получить его индекс

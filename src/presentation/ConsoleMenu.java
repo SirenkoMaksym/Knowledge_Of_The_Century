@@ -10,64 +10,163 @@ import java.util.Scanner;
 public class ConsoleMenu {
     private final LibraryService libraryService;
 
-    private final Scanner scanner;
+    private final Scanner scanner = new Scanner(System.in);
 
     public ConsoleMenu(LibraryService libraryService) {
         this.libraryService = libraryService;
 
-        this.scanner = new Scanner(System.in);
     }
 
-    public void showMenu() {
+    public void run(){
+        showMenu();
+    }
+
+    private void showMenu() {
         while (true) {
-            System.out.println("\n*** Библиотечное Меню ***");
-            System.out.println("1. Добавить книгу");
-            System.out.println("2. Показать все книги");
-            System.out.println("3. Поиск книги по названию");
-            System.out.println("4. Взять книгу");
-            System.out.println("5. Вернуть книгу");
-            System.out.println("6. Добавить пользователя(регистрация)");
-            System.out.println("7. Показать пользователя по имени");
-            System.out.println("8. Авторизация пользователя");
-            System.out.println("9. Выйти");
-            System.out.print("Выберите опцию: ");
+            System.out.println("*** Добро пожаловать в Библиотеку ***");
+            System.out.println("1. Регистрация");
+            System.out.println("2. Авторизация");
+            System.out.println("0. Выйти");
+            System.out.print("\nВыберите опцию: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // Чтобы избежать проблем с чтением следующей строки
-
-            switch (choice) {
-                case 1:
-                    addBook();
-                    break;
-                case 2:
-                    showAllBooks();
-                    break;
-                case 3:
-                    searchBooks();
-                    break;
-                case 4:
-                    borrowBook();
-                    break;
-                case 5:
-                    returnBook();
-                    break;
-                case 6:
-                    addUser();
-                    break;
-                case 7:
-                    showUser();
-                    break;
-                case 8:
-                    autoriseUser();
-                    break;
-                case 9:
-                    System.out.println("Выход из программы...");
-                    return;
-                default:
-                    System.out.println("Неверный ввод. Пожалуйста, выберите правильный номер опции.");
+            if (choice == 0) {
+                System.out.println("Выход из программы...");
+                break;
+            }
+            if (choice == 1) {
+                addUser();
+            } else if (choice == 2) {
+            autoriseUser();
+            }else {
+                System.out.println("Неверный ввод");
+                waitRead();
             }
         }
     }
+
+
+    private void showAdminMenu() {
+        while (true) {
+            System.out.println("=== Admin Menu ===");
+            System.out.println("1. Добавить книгу ");
+            System.out.println("2. Показать все книги");
+            System.out.println("3. Показать пользователя по имени");
+            System.out.println("4. Показать какую книгу взял пользователь");
+            System.out.println("0. Возврат в предыдущее меню");
+            System.out.print("\nВыберите опцию: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Чтобы избежать проблем с чтением следующей строки
+            if (choice == 0) {
+                System.out.println("Возврат в предыдущее меню");
+                break;
+            }
+            showSubAdminMenu(choice);
+        }
+    }
+
+    private void showSubAdminMenu(int choice){
+        switch (choice){
+
+            case 1:
+                addBook();
+                waitRead();
+                break;
+            case 2:
+                showAllBooks();
+                waitRead();
+                break;
+            case 3:
+                showUser();
+                waitRead();
+                break;
+            case 4:
+                checkBookUser();
+                waitRead();
+                break;
+            case 0:
+                System.out.println("Возврат в предыдущее меню");
+                return;
+            default:
+                System.out.println("Неверный ввод. Пожалуйста, сделайте правильный выбор.");
+                waitRead();
+        }
+    }
+
+    private void showUserMenu() {
+        while (true) {
+            System.out.println("=== User Menu ===");
+            System.out.println("1. Показать все книги");
+            System.out.println("2. Взять книгу");
+            System.out.println("3. Вернуть книгу");
+            System.out.println("4. Поиск книги по названию");
+            System.out.println("5. Поиск книги по автору");
+            System.out.println("0. Возврат в предыдущее меню");
+            System.out.print("\nВыберите опцию: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Чтобы избежать проблем с чтением следующей строки
+            if (choice == 0) {
+                System.out.println("Возврат в предыдущее меню");
+                break;
+            }
+            showSubUserMenu(choice);
+        }
+    }
+    private void showSubUserMenu (int choice){
+            switch (choice) {
+
+
+                case 1:
+                    showAllBooks();
+                    waitRead();
+                    break;
+                case 2:
+                    borrowBook();
+                    waitRead();
+                    break;
+                case 3:
+                    returnBook();
+                    waitRead();
+                    break;
+                case 4:
+                    searchBooks();
+                    waitRead();
+                    break;
+                case 5:
+                    searchBooksByAuthor();
+                    waitRead();
+                    break;
+                case 0:
+                    System.out.println("Возврат в предыдущее меню");
+                    return;
+                default:
+                    System.out.println("Неверный ввод. Пожалуйста, выберите правильный номер опции.");
+                    waitRead();
+            }
+        }
+
+        private void searchBooksByAuthor(){
+            System.out.println("Введите автора книги: ");
+            String author = scanner.nextLine();
+            MyArrayList<Book> searchBooksByAuthor = libraryService.searchBooksByAuthor(author);
+            if (searchBooksByAuthor.size() == 0) {
+                System.out.println("Книги не найдены.");
+            } else {
+                System.out.println("Найденные книги:");
+                for (int i = 0; i < searchBooksByAuthor.size(); i++) {
+                    System.out.println((i + 1) + ". " + searchBooksByAuthor.get(i).toString());
+                }
+            }
+        }
+
+        private void checkBookUser(){
+            System.out.println("Введите название книги: ");
+            String title = scanner.nextLine();
+            libraryService.checkBookUser(title);
+        }
 
     private void addBook() {
         System.out.print("Введите название книги: ");
@@ -117,7 +216,7 @@ public class ConsoleMenu {
                     System.out.println("Ошибка нужен вход в систему.");
                     return;
                 }
-        boolean success = libraryService.borrowBook(title, author);
+        boolean success = libraryService.borrowBook(title);
 
         if (success) {
             System.out.println("Книга успешно взята.");
@@ -147,7 +246,7 @@ public class ConsoleMenu {
         System.out.print("Введите пароль: ");
         String password = scanner.nextLine();
         libraryService.registerUser(new User(email, password, ((Role.USER.toString().equals(role))) ? Role.USER : Role.ADMIN));
-        System.out.println("Пользователь добавлен(зарегистрирован).");
+
     }
 
     private void showUser() {
@@ -168,6 +267,11 @@ public class ConsoleMenu {
         User user = libraryService.autorise(email, password);
         if (user != null) {
             System.out.println("Пользователь успешно авторизован: " + user.toString());
+            if (user.getRole() == Role.ADMIN){
+                showAdminMenu();
+            }else {
+            showUserMenu();
+            }
         } else {
             System.out.println("Пользователь с таким E-mail или паролем не найден!");
         }
