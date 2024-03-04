@@ -40,7 +40,7 @@ public class LibraryService {
 
     public boolean borrowBook(String title) {
         Book book = bookRepository.findBookByTitle(title);
-        if (book != null && book.isAvailable()) {
+        if (book != null && book.isAvailable() && activeUser != null) {
             bookRepository.updateBookAvailability(book, false);
             book.setBookHolder(activeUser);// Устанавливаем пользователя, который взял книгу
             activeUser.addBorrowedBook(title);// Добавляем книгу в список взятых книг пользователя
@@ -173,6 +173,10 @@ public class LibraryService {
     public User autorise(String email, String password) {
         if (email == null || password == null) {
             System.out.println("Пустой Email или пароль");
+            return null;
+        }
+        if (userRepository.findUserByEmail(email) == null){
+            System.out.println("Пользователь с таким Email или пароль не найден!!!");
             return null;
         }
         if (userRepository.findUserByEmail(email).getPassword().equals(password)) {
