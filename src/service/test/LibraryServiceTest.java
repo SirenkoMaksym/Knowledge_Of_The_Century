@@ -82,4 +82,38 @@ class LibraryServiceTest {
         assertEquals("test@mail.com",foundUser.getEmail());
     }
 
+
+
+    @Test
+    void isPasswordValidTest() {
+        assertTrue(libraryService.isPasswordValid("Passw0rd!"));
+        assertFalse(libraryService.isPasswordValid("short"));
+        assertFalse(libraryService.isPasswordValid("nouppercase1!"));
+        assertFalse(libraryService.isPasswordValid("NOLOWERCASE1!"));
+        assertFalse(libraryService.isPasswordValid("NoSpecialChar1"));
+        assertFalse(libraryService.isPasswordValid("NoDigits!"));
+    }
+    @Test
+    void isEmailValidTest() {
+        assertTrue(libraryService.isEmailValid("email@example.com"));
+        assertFalse(libraryService.isEmailValid("email@example"));
+        assertFalse(libraryService.isEmailValid("email.com"));
+        assertFalse(libraryService.isEmailValid("@example.com"));
+        assertFalse(libraryService.isEmailValid("email@example..com"));
+    }
+    @Test
+    void isRoleValidTest() {
+        assertTrue(libraryService.isRoleValid("user"));
+        assertTrue(libraryService.isRoleValid("admin"));
+        assertFalse(libraryService.isRoleValid("guest"));
+    }
+    @Test
+    void registerUserTest() {
+        User existingUser = new User("existing@example.com", "Existing1!", Role.USER);
+        userRepository.addUser(existingUser);
+        libraryService.registerUser(existingUser);
+        assertNotNull(userRepository.findUserByEmail("existing@example.com"));
+
+    }
+
 }

@@ -75,7 +75,7 @@ public class LibraryService {
         return userRepository.findUserByEmail(email);
     }
 
-    private boolean isPasswordValid(String password) {
+    public boolean isPasswordValid(String password) {
         if (password == null || password.length() < 8) return false;
 
         boolean isLowerCase = false;
@@ -115,7 +115,7 @@ public class LibraryService {
     }
 
 
-    private boolean isEmailValid(String email) {
+    public boolean isEmailValid(String email) {
         if (email == null || email.isEmpty()) return false;
         int indexAt = email.indexOf('@');
         if (indexAt <= 0 || indexAt != email.lastIndexOf('@')) return false;
@@ -142,7 +142,7 @@ public class LibraryService {
         return true;
     }
 
-    private boolean isRoleValid(String role) {
+    public boolean isRoleValid(String role) {
         if (role.equalsIgnoreCase("user")) return true;
         if (role.equalsIgnoreCase("admin")) {
             return true;
