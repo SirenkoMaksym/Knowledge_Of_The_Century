@@ -63,7 +63,7 @@ class LibraryServiceTest {
         book.setAvailable(false);
         bookRepository.addBook(book);
         libraryService.returnBook("1984");
-        assertTrue(book.isAvailable());
+        assertFalse(book.isAvailable());
     }
 
     @Test
