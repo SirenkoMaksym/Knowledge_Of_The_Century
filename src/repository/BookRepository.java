@@ -31,7 +31,7 @@ public class BookRepository {
 
         for (int i = 0; i < books.size(); i++) {
             Book book = books.get(i);
-            if (book.getAuthor().equalsIgnoreCase(author)){
+            if (book.getAuthor().toLowerCase().contains(author.toLowerCase())){
                 foundBooks.add(book);
             }
         }
