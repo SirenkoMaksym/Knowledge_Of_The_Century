@@ -2,6 +2,8 @@ package model;
 
 public enum Role {
     ADMIN,
+
+    NOUSER,
     USER;
 
     @Override
